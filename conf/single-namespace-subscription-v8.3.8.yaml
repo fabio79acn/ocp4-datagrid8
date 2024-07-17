@@ -1,0 +1,13 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: datagrid-operator
+  namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
+spec:
+  channel: 8.3.x
+  installPlanApproval: Manual
+  name: datagrid
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: datagrid-operator.v8.3.8
+
