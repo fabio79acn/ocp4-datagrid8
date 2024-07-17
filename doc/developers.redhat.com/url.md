@@ -49,7 +49,7 @@ Namespace-bounded installation 	kind: Subscription
 Unlike upstream operators and the AMQ Operator, Data Grid Operator does not allow direct Cluster Service Version (CSV) installation; the only supported approach is via the OLM’s Subscription application.
 
 The process describes how to upgrade from Data Grid 8.1/8.2 to Data Grid 8.3 in Data Grid 8 Operator. You can install the Data Grid Operator (for instance, via template) by creating a Subscription to a specific channel (8.1.x, 8.2.x, 8.3.x, 8.4.x) and setting the OperatorGroup accordingly, feeding from the CatalogSource (redhat-operators that will have the healthy or not healthy status) and declared via the YAML template below:
-
+~~~
 - apiVersion: operators.coreos.com/v1alpha1
   kind: Subscription
   metadata:
@@ -70,28 +70,28 @@ The process describes how to upgrade from Data Grid 8.1/8.2 to Data Grid 8.3 in 
   spec:
     targetNamespaces:
       - ${CLUSTER_NAMESPACE}
+~~~
 
-Copy snippet
 
 And then process the template above:
-
+~~~
 $ oc process -f template-01-complete.yaml | oc apply -f -
 project.project.openshift.io/dg-test-nyc configured
 subscription.operators.coreos.com/datagrid-operator configured
 operatorgroup.operators.coreos.com/infinispan configured
+~~~
 
-Copy snippet
 
 This will give you the Operator installed (8.2.8 below):
-
+~~~
 $ oc get csv
 NAME                       DISPLAY     VERSION   REPLACES                   PHASE
 datagrid-operator.v8.2.8   Data Grid   8.2.8     datagrid-operator.v8.2.7   Succeeded
+~~~
 
-Copy snippet
 
 The Operator is not the cluster. To create a cluster, create an Infinispan CR (which is exemplified below):
-
+~~~
 - apiVersion: infinispan.org/v1
   kind: Infinispan
   metadata:
@@ -108,8 +108,7 @@ The Operator is not the cluster. To create a cluster, create an Infinispan CR (w
       cpu: '2'
       extraJvmOpts: '-Xlog:gc*=info:file=/tmp/gc.log:time,level,tags,uptimemillis:filecount=10,filesize=1m'
       memory: 3Gi
-
-Copy snippet
+~~~
 
 
 How to upgrade the Data Grid Operator
@@ -118,28 +117,31 @@ The Data Grid Operator can be upgraded, as in all OpenShift Container Platform o
 The process is based on the InstallPlan object and is described below based on How to upgrade from Data Grid 8.1/8.2 to Data Grid 8.3 in Data Grid 8 Operator and example. 
 Given an installed operator (see above) and an install plan:
 
+~~~
 $ oc get csv
 NAME                       DISPLAY     VERSION   REPLACES                   PHASE
 datagrid-operator.v8.2.8   Data Grid   8.2.8     datagrid-operator.v8.2.7   Succeeded ← there is always one there
 [fdemeloj@fdemeloj dg828]$ oc get ip
 NAME            CSV                        APPROVAL   APPROVED
 install-tmbnx   datagrid-operator.v8.2.8   Manual     true
+~~~
 
-Copy snippet
 
 The Data Grid Operator upgrade will be one of the two scenarios below:
 
-    If Approval is set for Manual: Change the channel to 8.3.x and approve the upgrades via Approved = true.
-    If Approval is set for Automatic: Change the channel to 8.3.x.
+  - If Approval is set for Manual: Change the channel to 8.3.x and approve the upgrades via Approved = true.
+  - If Approval is set for Automatic: Change the channel to 8.3.x.
 
 In the above scenario, to upgrade from Data Grid 8.2.8 to Data Grid 8.3.x, change the channel version on the subscription:
 
 ### get subscription
-
+~~~
 oc get sub
 NAME                PACKAGE    SOURCE             CHANNEL
 datagrid-operator   datagrid   redhat-operators   8.2.x
+~~~
 ### edit the subscriptions
+~~~
 $ oc edit sub datagrid-operator
 From:
   spec:
@@ -148,43 +150,44 @@ To:
   spec:
   channel: 8.3.x
 —> subscription.operators.coreos.com/datagrid-operator
-…
+~~~
+~~~
 $ oc get sub -o json | grep "channel"                 
 "channel": "8.3.x”
+~~~
 
-Copy snippet
 
 The change above on the subscription will make the one Install Plan appear:
 
 ### get the install plan (ip):
-
+~~~
 $ oc get ip
 NAME            CSV                        APPROVAL   APPROVED
 install-tmbnx   datagrid-operator.v8.2.8   Manual     true
 install-tmlfx   datagrid-operator.v8.3.3   Manual     false ← Approved == false
+~~~
 
-Copy snippet
 
 ### edit from approved false to true:
-
+~~~
 oc patch ip install-tmlfx --type merge -p '{"spec":{"approved":true}}'
 → installplan.operators.coreos.com/install-tmlfx patched
+~~~
 
-Copy snippet
 
 And there we go—the Data Grid Operator 8.3.x is installed:
-
+~~~
 $ oc get csv
 NAME                       DISPLAY     VERSION   REPLACES                   PHASE
 datagrid-operator.v8.3.3   Data Grid   8.3.3     datagrid-operator.v8.2.8   Succeeded
+~~~
 
-Copy snippet
 
 
 Install a specific version and skip the upgrade process
 =======================================================
 The upgrade process described above can be skipped so one can install a specific version of Data Grid Operator directly. This is done via Subscription Operator 8.3.8 via Subscription to channel: 8.3.x and parameter startingCSV to 8.3.6:
-
+~~~
 - apiVersion: operators.coreos.com/v1alpha1
   kind: Subscription
   metadata:
@@ -197,8 +200,8 @@ The upgrade process described above can be skipped so one can install a specific
     source: redhat-operators
     sourceNamespace: openshift-marketplace
     startingCSV: datagrid-operator.v8.3.6 ←
+~~~
 
-Copy snippet
 
 So you can create a new namespace and install a new Data Grid Operator with a specific version.
 Multiple Data Grid Operator versions in the same cluster
