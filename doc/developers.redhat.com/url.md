@@ -204,8 +204,10 @@ The upgrade process described above can be skipped so one can install a specific
 
 
 So you can create a new namespace and install a new Data Grid Operator with a specific version.
-Multiple Data Grid Operator versions in the same cluster
 
+
+Multiple Data Grid Operator versions in the same cluster
+========================================================
 The Data Grid Operator is aimed for a singleton model, either namespace-bounded or cluster-wide installations. Therefore, having two Data Grid Operators (with different versions) in the same cluster is not supported—and certainly will cause problems, given the Custom Resource Definitions are cluster-wide resources—so for the whole cluster.
 
 However, to counter this limitation, Data Grid Operator 8.4.x allows the installation of multiple Data Grid server versions called Operands, which allows one Data Grid Operator to handle multiple Data Grid servers simultaneously. This means one Data Grid Operator provides support for multiple version Data Grid servers running at the same time (multi-operand deployment).

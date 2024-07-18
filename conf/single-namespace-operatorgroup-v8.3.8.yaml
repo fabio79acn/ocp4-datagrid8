@@ -1,8 +1,9 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: infinispan
+  name: coll-gestlck-be--datagrid-83-test-by-martinelli-wmjkf
   namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
 spec:
   targetNamespaces:
-    - coll-gestlck-be--datagrid-83-test-by-martinelli
+  - coll-gestlck-be--datagrid-83-test-by-martinelli
+  upgradeStrategy: Default
