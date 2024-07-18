@@ -7,3 +7,11 @@ spec:
   container:
     memory: 2Gi
   replicas: 5
+  service:
+    type: Cache
+    replicationFactor: 2
+    container:
+      storageClassName: rhosp-cinder
+      storage: 2Gi 
+      ephemeralStorage: false
+
