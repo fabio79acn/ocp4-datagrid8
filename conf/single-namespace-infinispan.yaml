@@ -1,37 +1,9 @@
 apiVersion: infinispan.org/v1
 kind: Infinispan
 metadata:
-  annotations:
-    infinispan.org/monitoring: "true"
   name: infinispan01
   namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
 spec:
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - podAffinityTerm:
-          labelSelector:
-            matchLabels:
-              app: infinispan-pod
-              clusterName: infinispan01
-              infinispan_cr: infinispan01
-          topologyKey: r.kubernetes.io/hostname
-        weight: 100
-  configListener:
-    enabled: true
   container:
-    memory: 3Gi
+    memory: 2Gi
   replicas: 5
-  security:
-    endpointAuthentication: true
-    endpointEncryption:
-      certSecretName: infinispan01-cert-secret
-      certServiceName: service.beta.openshift.io
-      clientCert: None
-      type: Service
-    endpointSecretName: infinispan01-generated-secret
-  service:
-    replicationFactor: 2
-    type: Cache
-  upgrades:
-    type: Shutdown
