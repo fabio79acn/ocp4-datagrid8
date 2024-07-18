@@ -8,6 +8,6 @@ oc delete  project coll-gestlck-be--datagrid-83-test-by-martinelli  && \
   oc create -f 20  && \
   ./25             && \
   echo OK          && \
-  timeout 20 oc get csv -w \
+  sleep 5             \
   oc create -f 30
 
