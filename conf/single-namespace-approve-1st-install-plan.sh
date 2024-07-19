@@ -1,4 +1,9 @@
+#!/bin/bash
+
+set -xeuo pipefail
 echo "Waiting for the 1st datagrid install plan to be present"
+
+readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
 
 # Function to display progress bar
 show_progress() {
@@ -11,17 +16,17 @@ show_progress() {
   printf "\r[%s%s] %d%%" "$PROGRESS_BAR" "$REMAINING_BAR" "$1"
 }
 
-# Example usage
+
+myINSTALLPLAN=""
 for i in $(seq 0 100); do
+  myINSTALLPLAN="$(oc get --sort-by=.metadata.creationTimestamp -n ${myPROJ} ip -o custom-columns=NAME:.metadata.name --no-headers=true)"
+  [ ! -z $myINSTALLPLAN ] && [[ "${myINSTALLPLAN}" != "null" ]] && break
   show_progress $i
   sleep 0.1
 done
-
 echo -e "\nDone!"
 
 
-readonly myINSTALLPLAN="$(oc get -n coll-gestlck-be--datagrid-83-test-by-martinelli ip  -o json  | jq '.items[0].metadata.name' -r)"
+oc -n ${myPROJ} patch                          installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
 
-oc -n coll-gestlck-be--datagrid-83-test-by-martinelli patch ip $myINSTALLPLAN --type merge -p '{"spec":{"approved":true}}'
-
-oc wait --for=condition=Installed installplan/${myINSTALLPLAN} -n coll-gestlck-be--datagrid-83-test-by-martinelli --timeout=300s
+oc -n ${myPROJ} wait --for=condition=Installed installplan/${myINSTALLPLAN} --timeout=300s

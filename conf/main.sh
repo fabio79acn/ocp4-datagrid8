@@ -13,9 +13,14 @@ oc delete  project ${myPROJ}  && \
   sleep 5             \
   oc create -f 30     \
   oc create -f 40     \
-  oc create -f 50  
+  oc create -f 50     \
+  readonly DONE="true" 
   
+if [[ ${DONE} == "true" ]]; then
+  echo -n "Portal credentials, username:$(oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.username' -r  | base64 -d) password:$(oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.password' -r  |base64 -d)"
+  echo
+  echo "You still have to expose the admin service in order to access the DataGrid portal !!"
+fi
 
-echo -n "Portal credentials, username:$(oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.username' -r  | base64 -d) password:$(oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.password' -r  |base64 -d)"
-echo
-echo "You still have to expose the admin service in order to access the DataGrid portal !!"
+[[ ${DONE} != "true" ]] && exit 1
+
