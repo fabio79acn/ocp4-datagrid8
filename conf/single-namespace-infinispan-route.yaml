@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: infinispan-service-admin
+    clusterName: infinispan01
+    infinispan_cr: infinispan01
+  name: infinispan-admin
+  namespace: myPROJ
+spec:
+  host: infinispan-admin-myPROJ.apps.dagcoll.mef.gov.it
+  port:
+    targetPort: infinispan-adm
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: infinispan01-admin
+    weight: 100
+  wildcardPolicy: None
