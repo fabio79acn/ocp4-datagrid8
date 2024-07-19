@@ -2,7 +2,7 @@ apiVersion: infinispan.org/v1
 kind: Infinispan
 metadata:
   name: infinispan01
-  namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
+  namespace: myPROJ
 spec:
   container:
     memory: 2Gi

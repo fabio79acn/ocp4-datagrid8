@@ -2,7 +2,7 @@ apiVersion: infinispan.org/v2alpha1
 kind: Cache
 metadata:
   name: mycache
-  namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
+  namespace: myPROJ
 spec:
   clusterName: infinispan01
   name: mycache

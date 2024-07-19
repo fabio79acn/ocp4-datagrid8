@@ -1,9 +1,9 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: coll-gestlck-be--datagrid-83-test-by-martinelli-wmjkf
-  namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
+  name: myPROJ-wmjkf
+  namespace: myPROJ
 spec:
   targetNamespaces:
-  - coll-gestlck-be--datagrid-83-test-by-martinelli
+  - myPROJ
   upgradeStrategy: Default

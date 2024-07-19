@@ -1,9 +1,10 @@
 #!/bin/bash
 
-set -xeuo pipefail
+set -euo pipefail
 echo "Waiting for the 1st datagrid install plan to be present"
 
-readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
+#readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
+[ ! -z ${myPROJ} ] && exit 1
 
 # Function to display progress bar
 show_progress() {
@@ -37,4 +38,7 @@ for i in $(seq 0 100); do
   show_progress $i
   sleep 1
 done
+
+sleep 10
 echo -e "\nDone!"
+

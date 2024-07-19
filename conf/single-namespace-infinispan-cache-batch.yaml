@@ -2,7 +2,7 @@ apiVersion: infinispan.org/v2alpha1
 kind: Batch
 metadata:
   name: infinispan01
-  namespace: coll-gestlck-be--datagrid-83-test-by-martinelli
+  namespace: myPROJ
 spec:
   cluster: infinispan01
   config: |
