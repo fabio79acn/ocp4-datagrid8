@@ -10,10 +10,10 @@ oc delete  project ${myPROJ}  && \
   oc create -f 20  && \
   ./25             && \
   echo OK          && \
-  sleep 5             \
-  oc create -f 30     \
-  oc create -f 40     \
-  oc create -f 50     \
+  sleep 5          && \
+  oc create -f 30  && \
+  oc create -f 40  && \
+  oc create -f 50  && \
   readonly DONE="true" 
   
 if [[ ${DONE} == "true" ]]; then

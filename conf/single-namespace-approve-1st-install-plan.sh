@@ -8,7 +8,7 @@ readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
 # Function to display progress bar
 show_progress() {
   local PROG_BAR_WIDTH=50
-  local PROGRESS=$(($1 * $PROG_BAR_WIDTH / 100))
+  local PROGRESS=$(($1 * $PROG_BAR_WIDTH / 1000))
   local REMAINING=$(($PROG_BAR_WIDTH - $PROGRESS))
   local PROGRESS_BAR=$(printf "%${PROGRESS}s" | tr ' ' '#')
   local REMAINING_BAR=$(printf "%${REMAINING}s" | tr ' ' ' ')
@@ -19,10 +19,10 @@ show_progress() {
 
 myINSTALLPLAN=""
 for i in $(seq 0 100); do
-  myINSTALLPLAN="$(oc get --sort-by=.metadata.creationTimestamp -n ${myPROJ} ip -o custom-columns=NAME:.metadata.name --no-headers=true)"
-  [ ! -z $myINSTALLPLAN ] && [[ "${myINSTALLPLAN}" != "null" ]] && break
+  myINSTALLPLAN="$(oc get --sort-by=.metadata.creationTimestamp -n ${myPROJ} ip -o custom-columns=NAME:.metadata.name --no-headers=true | head -1)"
+  [[ "${myINSTALLPLAN}" =~ "install" ]] && break
   show_progress $i
-  sleep 0.1
+  sleep 1
 done
 echo -e "\nDone!"
 
