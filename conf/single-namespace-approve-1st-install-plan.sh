@@ -32,7 +32,7 @@ oc -n ${myPROJ} patch                          installplan/${myINSTALLPLAN} --ty
 oc -n ${myPROJ} wait --for=condition=Installed installplan/${myINSTALLPLAN} --timeout=300s
 
 for i in $(seq 0 100); do
-  oc -n ${myPROJ} get Infinispan -o custom-columns=NAME:.metadata.name,READY:.status.conditions[?(@.type==\"Ready\")].status --no-headers=true | head -1 | awk '{ print $1}'
+  oc -n ${myPROJ} get Infinispan -o custom-columns=NAME:.metadata.name,READY:.status.conditions[?\(@.type==\"Ready\"\)].status --no-headers=true | head -1 | awk '{ print $1}'
   [ $? -eq 0 ] && break
   show_progress $i
   sleep 1
