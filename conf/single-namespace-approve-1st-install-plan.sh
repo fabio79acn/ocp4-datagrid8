@@ -4,7 +4,7 @@ set -euo pipefail
 echo "Waiting for the 1st datagrid install plan to be present"
 
 #readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
-[ ! -z ${myPROJ} ] && exit 1
+[ -z ${myPROJ} ] && exit 1
 
 # Function to display progress bar
 show_progress() {

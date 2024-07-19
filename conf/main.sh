@@ -6,7 +6,7 @@ readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
 ##############################################################################
 # before to run this script you have to run: export myPROJ="<your-ocp-project>" 
 ###############################################################################
-[ ! -z $myPROJ ] && exit 1
+[ -z $myPROJ ] && exit 1
 
 # at certain point evaluate whether kustomize can produce a similar logic like the one below..
 
