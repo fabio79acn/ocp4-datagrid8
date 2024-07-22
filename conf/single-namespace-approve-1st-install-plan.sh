@@ -28,12 +28,14 @@ done
 
 
 oc -n ${myPROJ} patch                          installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
-sleep 5
+sleep 20
+echo "OK patch"
 oc -n ${myPROJ} wait --for=condition=Installed installplan/${myINSTALLPLAN}                      --timeout=300s
-sleep 5
+sleep 20
+echo "OK 1/2 wait"
 oc -n ${myPROJ} wait --for=condition=Available deployment/infinispan-operator-controller-manager --timeout=600s
 sleep 20
-
+echo "OK 2/2 wait"
 
 #for i in $(seq 0 100); do
 #  oc -n ${myPROJ} get Infinispan -o custom-columns=NAME:.metadata.name,READY:.status.conditions[?\(@.type==\"Ready\"\)].status --no-headers=true | head -1 | awk '{ print $1}'
