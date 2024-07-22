@@ -33,7 +33,7 @@ oc -n ${myPROJ} wait --for=condition=Installed installplan/${myINSTALLPLAN}     
 
 oc -n ${myPROJ} wait --for=condition=Available deployment/infinispan-operator-controller-manager --timeout=600s
 
-sleep 5
+sleep 20
 
 
 #for i in $(seq 0 100); do
