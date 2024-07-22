@@ -28,11 +28,10 @@ done
 
 
 oc -n ${myPROJ} patch                          installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
-
+sleep 5
 oc -n ${myPROJ} wait --for=condition=Installed installplan/${myINSTALLPLAN}                      --timeout=300s
-
+sleep 5
 oc -n ${myPROJ} wait --for=condition=Available deployment/infinispan-operator-controller-manager --timeout=600s
-
 sleep 20
 
 
