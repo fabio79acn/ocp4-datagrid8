@@ -1,7 +1,7 @@
 Curl test
 #########
 
-Be aware of an another way to interact with DataGrid; it assumes you've create a mycache
+Be aware of an another method to interact with DataGrid
 
 ~~~
 apiVersion: infinispan.org/v2alpha1
@@ -12,7 +12,7 @@ metadata:
 spec:
   cluster: infinispan01
   config: |
-    create cache --template=org.infinispan.DIST_SYNC mycache
-    put --cache=mycache hello world
-    put --cache=mycache hola mundo
+    create cache --template=org.infinispan.DIST_SYNC mycache99
+    put --cache=mycache99 hello world
+    put --cache=mycache99 hola mundo
 ~~~
