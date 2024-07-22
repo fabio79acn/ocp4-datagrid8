@@ -9,7 +9,7 @@ spec:
   replicas: 5
   service:
     type: Cache
-    replicationFactor: 2
+    replicationFactor: 3
     container:
       storageClassName: rhosp-cinder
       storage: 2Gi 

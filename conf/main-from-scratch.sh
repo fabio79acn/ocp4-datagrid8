@@ -11,11 +11,10 @@ set -euo pipefail
 
 set +e
 oc get project $myPROJ >/dev/null 2>&1
-[ $? -ne 0 ] && exit 1
+[ $? -eq 0 ] && oc delete project ${myPROJ}
 set -e
 
-#oc delete  project ${myPROJ}  && \
-#  oc create -f 05  && \
+sed   -s "s/myPROJ/${myPROJ}/g" 05 | oc create -f-  && \
   sed -s "s/myPROJ/${myPROJ}/g" 10 | oc create -f-  && \
   sed -s "s/myPROJ/${myPROJ}/g" 20 | oc create -f-  && \
   ./25             && \
