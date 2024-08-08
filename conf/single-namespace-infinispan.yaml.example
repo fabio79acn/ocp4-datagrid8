@@ -1,0 +1,64 @@
+# https://docs.redhat.com/en/documentation/red_hat_data_grid/8.4/html-single/data_grid_operator_guide/index#datagrid-cr_services
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+  annotations:
+    infinispan.org/monitoring: 'true'
+spec:
+  replicas: 6
+  version: 8.4.6-1
+  upgrades:
+    type: Shutdown
+  service:
+    type: DataGrid
+    container:
+      storage: 2Gi
+      # The ephemeralStorage and storageClassName fields are mutually exclusive.
+      ephemeralStorage: false
+      storageClassName: my-storage-class
+    sites:
+      local:
+      name: azure
+      expose:
+        type: LoadBalancer
+      locations:
+      - name: azure
+        url: openshift://api.azure.host:6443
+        secretName: azure-token
+      - name: aws
+        clusterName: infinispan
+        namespace: rhdg-namespace
+        url: openshift://api.aws.host:6443
+        secretName: aws-token
+  security:
+    endpointSecretName: endpoint-identities
+    endpointEncryption:
+        type: Secret
+        certSecretName: tls-secret
+  container:
+    extraJvmOpts: "-XX:NativeMemoryTracking=summary"
+    cpu: "2000m:1000m"
+    memory: "2Gi:1Gi"
+  logging:
+    categories:
+      org.infinispan: debug
+      org.jgroups: debug
+      org.jgroups.protocols.TCP: error
+      org.jgroups.protocols.relay.RELAY2: error
+  expose:
+    type: LoadBalancer
+  configMapName: "my-cluster-config"
+  configListener:
+    enabled: true
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app: infinispan-pod
+              clusterName: infinispan
+              infinispan_cr: infinispan
+          topologyKey: "kubernetes.io/hostname"

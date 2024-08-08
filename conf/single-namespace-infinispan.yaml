@@ -3,15 +3,42 @@ kind: Infinispan
 metadata:
   name: infinispan01
   namespace: myPROJ
+  annotations:
+    infinispan.org/monitoring: 'true'
 spec:
   container:
     memory: 2Gi
+  upgrades:
+    type: Shutdown
   replicas: 5
   service:
-    type: Cache
-    replicationFactor: 3
+    type: DataGrid
     container:
       storageClassName: rhosp-cinder
       storage: 2Gi 
       ephemeralStorage: false
+  container:
+    extraJvmOpts: "-XX:NativeMemoryTracking=summary"
+    cpu: "2000m:1000m"
+    memory: "2Gi:1Gi"
+  logging:
+    categories:
+      org.infinispan: debug
+      org.jgroups: debug
+      org.jgroups.protocols.TCP: error
+      org.jgroups.protocols.relay.RELAY2: error
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app: infinispan-pod
+              clusterName: infinispan01
+              infinispan_cr: infinispan
+          topologyKey: "kubernetes.io/hostname"
 
+
+
+  

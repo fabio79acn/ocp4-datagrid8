@@ -37,14 +37,3 @@ oc -n ${myPROJ} wait --for=condition=Available deployment/infinispan-operator-co
 sleep 20
 echo "OK 2/2 wait"
 
-#for i in $(seq 0 100); do
-#  oc -n ${myPROJ} get Infinispan -o custom-columns=NAME:.metadata.name,READY:.status.conditions[?\(@.type==\"Ready\"\)].status --no-headers=true | head -1 | awk '{ print $1}'
-#  [ $? -eq 0 ] && break
-#  show_progress $i
-#  sleep 1
-#done
-#
-#sleep 20
-#
-#echo -e "\nDone!"
-#
