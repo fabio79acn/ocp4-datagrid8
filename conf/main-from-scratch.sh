@@ -27,13 +27,13 @@ sed   -s "s/myPROJ/${myPROJ}/g" 05 | oc create -f-  && \
   
 readonly myPORTAL_USER="$(    oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.username' -r  | base64 -d)"
 readonly myPORTAL_PASSWORD="$(oc get -n ${myPROJ} secret infinispan01-generated-operator-secret -o json | jq '.data.password' -r  |base64 -d)"
-readonly myCLI_USER="$(       oc get -n ${myPROJ} extract secret/infinispan01-generated-secret  --to=-  |& egrep username |  cut  -d: -f2 | tr  -d ' ')"
-readonly myCLI_PASSWORD="$(   oc get -n ${myPROJ} extract secret/infinispan01-generated-secret  --to=-  |& egrep password |  cut  -d: -f2 | tr  -d ' ')"
+readonly myCLI_USER="$(       oc extract -n ${myPROJ} secret/infinispan01-generated-secret  --to=-  |& egrep username |  cut  -d: -f2 | tr  -d ' ')"
+readonly myCLI_PASSWORD="$(   oc extract -n ${myPROJ} secret/infinispan01-generated-secret  --to=-  |& egrep password |  cut  -d: -f2 | tr  -d ' ')"
 
 
 if [[ ${DONE} == "true" ]]; then
-  echo -n "DataGrid portal credentials; username:$myPORTAL_USER password:$myPORTAL_PASSWORD"
-  echo    "Datagrid CLI    credentials; username:$myCLI_USER password:$myCLI_PASSWORD"
+  echo    "DataGrid portal credentials| username:$myPORTAL_USER password:$myPORTAL_PASSWORD"
+  echo    "Datagrid CLI    credentials| username:$myCLI_USER password:$myCLI_PASSWORD"
   echo
   echo "Be aware that you still have to manually expose the admin svc as a https:// route in order to access the DataGrid portal"
 fi
