@@ -8,7 +8,6 @@ metadata:
   name: infinispan-admin
   namespace: myPROJ
 spec:
-  host: infinispan-admin-myPROJ.apps.dagcoll.mef.gov.it
   port:
     targetPort: infinispan-adm
   tls:
