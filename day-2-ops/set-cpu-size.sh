@@ -4,11 +4,11 @@
 [ ! -f common.sh ] && exit 1
 .      common.sh
 
-while getopts ":r:" opt; do
+while getopts ":c:" opt; do
   case ${opt} in
-    r)
-      echo "Option -r was triggered with argument: $OPTARG"
-      readonly myRAM_SIZE=$OPTARG
+    c)
+      echo "Option -c was triggered with argument: $OPTARG"
+      readonly myCPU_SIZE=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -22,4 +22,4 @@ while getopts ":r:" opt; do
 done
 
 
-oc -n ${myPROJ} patch infinispan/${myINFINISPAN} --type merge -p "{\"spec\":{\"container\":{\"memory\":\"${myRAM_SIZE}Gi\"}}}"
+oc -n ${myPROJ} patch infinispan/${myINFINISPAN} --type merge -p "{\"spec\":{\"container\":{\"cpu\":\"${myCPU_SIZE}m\"}}}"
