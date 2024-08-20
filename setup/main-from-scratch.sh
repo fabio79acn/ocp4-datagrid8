@@ -20,7 +20,7 @@ sed   -s "s/myPROJ/${myPROJ}/g" 05 | oc create -f-  && \
   ./25             && \
   echo OK          && \
   sed -s "s/myPROJ/${myPROJ}/g" 30 | oc create -f-  && \
-  oc wait --for condition=wellFormed --timeout=1000s infinispan/infinispan01
+  oc wait --for condition=wellFormed --timeout=5000s infinispan/infinispan01
   sed -s "s/myPROJ/${myPROJ}/g" 40 | oc create -f-  && \
   sed -s "s/myPROJ/${myPROJ}/g" 50 | oc create -f-  && \
   readonly DONE="true" 
