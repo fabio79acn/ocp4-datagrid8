@@ -48,7 +48,7 @@ echo "--------------------------------------------------------------------------
 
 # PUT into the cache
 echo    "Put key1=value1 in cache ${INFINISPAN_CACHE}"
-for i in $(seq 1 100); do 
+for i in $(seq 1 10000); do 
   echo -n "Create Key${i};"
   oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4      -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X POST -d "value${i}" -k "${myDATAGRID}/${INFINISPAN_CACHE}/key${i}"
   
