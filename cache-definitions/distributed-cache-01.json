@@ -1,0 +1,41 @@
+{
+    "distributed-cache": {
+        "encoding": {
+            "key": {
+              "media-type": "application/x-www-form-urlencoded"
+            },
+            "value": {
+              "media-type": "application/x-www-form-urlencoded"
+            }
+          },
+        "expiration": {
+            "max-idle": -1,
+            "lifespan": -1,
+            "interval": 60000
+        },
+        "indexing": {
+            "enabled": false
+        },
+        "memory": {
+            "max-size": "1000MB",
+            "max-count": -1,
+            "when-full": "REMOVE",
+            "storage": "HEAP"
+        },
+        "mode": "SYNC",
+        "owners": 2,
+        "partition-handling": {
+            "when-split": "ALLOW_READ_WRITES",
+            "merge-policy": "REMOVE_ALL"
+        },
+        "state-transfer": {
+            "enabled": false,
+            "await-initial-transfer": false
+        },
+        "statistics": true,
+        "transaction": {
+            "mode": "NONE"
+        }
+    }
+}
+

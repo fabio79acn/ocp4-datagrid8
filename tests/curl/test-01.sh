@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-#readonly myPROJ="coll-gestlck-be--datagrid-83-test-by-martinelli"
 [ -z $myPROJ ] && exit 1
 oc get projects -o name |& egrep $myPROJ 2>&1
 [ $? -ne 0 ] && exit 1
@@ -15,86 +14,9 @@ readonly INFINISPAN_USER="    $(oc -n ${myPROJ} extract secret/${INFINISPAN_CLUS
 readonly INFINISPAN_PASSWORD="$(oc -n ${myPROJ} extract secret/${INFINISPAN_CLUSTER}-generated-secret  --to=-   |& egrep password |  cut  -d: -f2 | tr  -d ' ')"
 [ -z $INFINISPAN_USER ] && exit 1;[ -z $INFINISPAN_PASSWORD ] && exit 1
 #readonly mySVC="${INFINISPAN_CLUSTER}.${myPROJ}.svc"
-readonly INFINISPAN_CACHE="my-curl-cache-02"
-readonly myCACHE_DEF=/tmp/my-datagrid-cache-def.json
-[ -f $myCACHE_DEF ] && rm -f $myCACHE_DEF
-
-# cat << EOF > $myCACHE_DEF
-# {
-#   "distributed-cache": {
-#     "mode": "SYNC",
-#     "owners": 4,
-#     "statistics": true,
-#     "encoding": {
-#       "media-type": "text/plain"
-#     },
-#     "memory": {
-#       "storage": "OFF_HEAP"
-#     },
-#     "persistence": {
-#       "file-store": {
-#         "data": {
-#           "path": "data"
-#         },
-#         "index": {
-#           "path": "index"
-#         }
-#       },
-#       "passivation": false
-#     }
-#   }
-# }
-# EOF
-
-
-cat << EOF > $myCACHE_DEF
-{
-    "distributed-cache": {
-        "encoding": {
-            "key": {
-              "media-type": "application/x-www-form-urlencoded"
-            },
-            "value": {
-              "media-type": "application/x-www-form-urlencoded"
-            }
-          },
-        "expiration": {
-            "max-idle": -1,
-            "lifespan": -1,
-            "interval": 60000
-        },
-        "indexing": {
-            "enabled": false
-        },
-        "memory": {
-            "max-size": "1000MB",
-            "max-count": -1,
-            "when-full": "REMOVE",
-            "storage": "HEAP"
-        },
-        "mode": "SYNC",
-        "owners": 2,
-        "partition-handling": {
-            "when-split": "ALLOW_READ_WRITES",
-            "merge-policy": "REMOVE_ALL"
-        },
-        "state-transfer": {
-            "enabled": false,
-            "await-initial-transfer": false
-        },
-        "statistics": true,
-        "transaction": {
-            "mode": "NONE"
-        }
-    }
-}
-EOF
-
-
-
-#cat << EOF > $myCACHE_DEF
-#{"distributed-cache":{"configuration":"org.infinispan.LOCAL","mode":"SYNC","remote-timeout":"17500","statistics":true,"locking":{"concurrency-level":"1000","acquire-timeout":"15000","striping":false},"state-transfer":{"timeout":"60000"}}}
-#EOF
+readonly INFINISPAN_CACHE="my-curl-cache-01"
+readonly myCACHE_DEF_DIR='../../cache-definitions'
+readonly myCACHE_DEF_FILE='distributed-cache-01.json'
 
 set -e
 #  GET caches
@@ -108,11 +30,11 @@ readonly myCURRENT_CACHES=$(oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su
 [[ "$myCURRENT_CACHES" == *"$INFINISPAN_CACHE"* ]] && oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X DELETE           -k "${myDATAGRID}/${INFINISPAN_CACHE}"
 
 # create cache
-oc cp $myCACHE_DEF   ${myTEST_POD}:$myCACHE_DEF
-oc -n ${myPROJ} exec ${myTEST_POD} -- cat $myCACHE_DEF
+oc cp $myCACHE_DEF_DIR/$myCACHE_DEF_FILE  ${myTEST_POD}:/tmp/$myCACHE_DEF_FILE
+oc -n ${myPROJ} exec ${myTEST_POD} --  cat              /tmp/$myCACHE_DEF_FILE
 set  -x
 readonly MEDIATYPE_JSON="Content-Type: application/json"
-oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4 -vvv -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} -H "$MEDIATYPE_JSON" --data-binary @$myCACHE_DEF --digest -X POST -k "${myDATAGRID}/${INFINISPAN_CACHE}"
+oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4 -vvv -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} -H "$MEDIATYPE_JSON" --data-binary @/tmp/$myCACHE_DEF_FILE --digest -X POST -k "${myDATAGRID}/${INFINISPAN_CACHE}"
 set +x
 
 set -e
@@ -146,4 +68,3 @@ echo "--------------------------------------------------------------------------
 echo "----------------------------------------------------------------------------------------"
 set +e
 
-[ -f $myCACHE_DEF ] && rm -f $myCACHE_DEF
