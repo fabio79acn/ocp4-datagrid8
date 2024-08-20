@@ -1,0 +1,27 @@
+{
+  "distributed-cache": {
+    "name": "distributed-cache-02",
+    "mode": "SYNC",
+    "persistence": {
+      "passivation": false,
+      "file-store": {
+        "path": "/opt/infinispan/server/data/distributed-cache-02"
+      }
+    },
+    "indexing": {
+       "enabled": false
+    },
+    "owners": 3,
+    "statistics": true,
+    "segments": 256,
+    "encoding": {
+      "key": {
+              "media-type": "application/x-www-form-urlencoded"
+            },
+      "value": {
+              "media-type": "application/x-www-form-urlencoded"
+            }
+
+    }
+  }
+}
