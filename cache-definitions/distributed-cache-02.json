@@ -5,7 +5,7 @@
     "persistence": {
       "passivation": false,
       "file-store": {
-        "path": "/opt/infinispan/server/data/distributed-cache-02"
+        "path": "/opt/infinispan/server/data/"
       }
     },
     "indexing": {
