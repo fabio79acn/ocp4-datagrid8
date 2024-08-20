@@ -14,9 +14,11 @@ readonly INFINISPAN_USER="    $(oc -n ${myPROJ} extract secret/${INFINISPAN_CLUS
 readonly INFINISPAN_PASSWORD="$(oc -n ${myPROJ} extract secret/${INFINISPAN_CLUSTER}-generated-secret  --to=-   |& egrep password |  cut  -d: -f2 | tr  -d ' ')"
 [ -z $INFINISPAN_USER ] && exit 1;[ -z $INFINISPAN_PASSWORD ] && exit 1
 #readonly mySVC="${INFINISPAN_CLUSTER}.${myPROJ}.svc"
-readonly INFINISPAN_CACHE="my-curl-cache-01"
+
 readonly myCACHE_DEF_DIR='../../cache-definitions'
-readonly myCACHE_DEF_FILE='distributed-cache-01.json'
+readonly myCACHE_DEF_FILE='distributed-cache-03'
+[ ! -f $myCACHE_DEF_DIR/${myCACHE_DEF_FILE}.json ] && exit 1
+readonly INFINISPAN_CACHE="${myCACHE_DEF_FILE}"
 
 set -e
 #  GET caches
@@ -26,15 +28,16 @@ oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su ${INFINISPAN_USER}:${INFINI
 echo
 
 # DELETE cache if already present
+echo -n "Delete cache $myCACHE_DEF_FILE if exists. "
 readonly myCURRENT_CACHES=$(oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X GET              -k "${myDATAGRID}")
-[[ "$myCURRENT_CACHES" == *"$INFINISPAN_CACHE"* ]] && oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X DELETE           -k "${myDATAGRID}/${INFINISPAN_CACHE}"
+[[ "$myCURRENT_CACHES" == *"$INFINISPAN_CACHE"* ]] && oc -n ${myPROJ} exec ${myTEST_POD} -- curl       -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X DELETE           -k "${myDATAGRID}/${INFINISPAN_CACHE}" && echo " Cache $myCACHE_DEF_FILE Deleted."
 
 # create cache
-oc cp $myCACHE_DEF_DIR/$myCACHE_DEF_FILE  ${myTEST_POD}:/tmp/$myCACHE_DEF_FILE
-oc -n ${myPROJ} exec ${myTEST_POD} --  cat              /tmp/$myCACHE_DEF_FILE
+oc cp $myCACHE_DEF_DIR/${myCACHE_DEF_FILE}.json  ${myTEST_POD}:/tmp/${myCACHE_DEF_FILE}.json
+oc -n ${myPROJ} exec ${myTEST_POD} --  cat                     /tmp/${myCACHE_DEF_FILE}.json
 set  -x
 readonly MEDIATYPE_JSON="Content-Type: application/json"
-oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4 -vvv -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} -H "$MEDIATYPE_JSON" --data-binary @/tmp/$myCACHE_DEF_FILE --digest -X POST -k "${myDATAGRID}/${INFINISPAN_CACHE}"
+oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4 -vvv -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} -H "$MEDIATYPE_JSON" --data-binary @/tmp/${myCACHE_DEF_FILE}.json --digest -X POST -k "${myDATAGRID}/${INFINISPAN_CACHE}"
 set +x
 
 set -e
