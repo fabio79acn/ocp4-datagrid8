@@ -57,7 +57,7 @@ echo "--------------------------------------------------------------------------
 
 # GET from the cache
 echo -n "Get key key{i} from cache ${INFINISPAN_CACHE}: "
-for i in $(seq 1 100); do
+for i in $(seq 1 10000); do
   oc -n ${myPROJ} exec ${myTEST_POD} -- curl --http1.1 -4      -su ${INFINISPAN_USER}:${INFINISPAN_PASSWORD} --digest -X GET              -k "${myDATAGRID}/${INFINISPAN_CACHE}/key${i}";echo -n ";"
 done
 echo "----------------------------------------------------------------------------------------"
