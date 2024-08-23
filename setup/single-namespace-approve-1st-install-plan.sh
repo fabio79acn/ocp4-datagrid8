@@ -29,7 +29,16 @@ echo  "Install plan:${myINSTALLPLAN} is now available, processing it"
 set -x
 oc -n ${myPROJ} patch                            installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
 oc -n ${myPROJ} wait --for=condition=Installed   installplan/${myINSTALLPLAN}                      --timeout=300s
-sleep 60
+set +x
+set +e
+while true; do
+  oc -n ${myPROJ} get deployment/infinispan-operator-controller-manager >/dev/null 2>&1 
+  [ $? -eq 0 ] && break
+  echo "Waiting for the presence of: deployment/infinispan-operator-controller-manager"
+  sleep 2 
+done
+set -e 
+set -x
 oc -n ${myPROJ} wait --for=condition=Available   deployment/infinispan-operator-controller-manager --timeout=600s
 oc -n ${myPROJ} wait --for=condition=Initialized po -l app.kubernetes.io/name=infinispan-operator  --timeout=600s
 set +x
