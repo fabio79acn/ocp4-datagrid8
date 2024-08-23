@@ -4,10 +4,10 @@
 .      common.sh
 
 
-while getopts ":i:" opt; do
+while getopts ":s:" opt; do
   case ${opt} in
-    i)
-      echo "Option -i was triggered with argument: $OPTARG"
+    s)
+      echo "Option -s was triggered with argument: $OPTARG"
       readonly myREPLICAS=$OPTARG
       ;;
     \?)

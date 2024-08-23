@@ -4,10 +4,10 @@
 [ ! -f common.sh ] && exit 1
 .      common.sh
 
-while getopts ":c:" opt; do
+while getopts ":s:" opt; do
   case ${opt} in
-    c)
-      echo "Option -c was triggered with argument: $OPTARG"
+    s)
+      echo "Option -s was triggered with argument: $OPTARG"
       readonly myCPU_SIZE=$OPTARG
       ;;
     \?)
