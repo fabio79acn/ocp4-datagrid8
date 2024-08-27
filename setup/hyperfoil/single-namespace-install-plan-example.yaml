@@ -1,0 +1,239 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: InstallPlan
+metadata:
+  creationTimestamp: "2024-08-23T09:53:35Z"
+  generateName: install-
+  generation: 2
+  name: install-x9g52
+  namespace: coll-gestlck-be--datagrid-by-martinelli
+  ownerReferences:
+  - apiVersion: operators.coreos.com/v1alpha1
+    blockOwnerDeletion: false
+    controller: false
+    kind: Subscription
+    name: datagrid
+    uid: d0961808-9de6-41cf-bf0a-a76d5564602a
+  - apiVersion: operators.coreos.com/v1alpha1
+    blockOwnerDeletion: false
+    controller: false
+    kind: Subscription
+    name: hyperfoil-bundle
+    uid: 37075dcc-dade-49a2-b502-8341ae41b546
+  resourceVersion: "863137276"
+  uid: decb6386-6890-4075-b8be-eec111e5c5cd
+spec:
+  approval: Manual
+  approved: true
+  clusterServiceVersionNames:
+  - datagrid-operator.v8.4.10
+  - hyperfoil-operator.v0.24.2
+  - datagrid-operator.v8.4.10
+  - hyperfoil-operator.v0.24.2
+  generation: 3
+status:
+  bundleLookups:
+  - catalogSourceRef:
+      name: redhat-operators
+      namespace: openshift-marketplace
+    identifier: datagrid-operator.v8.4.10
+    path: registry.redhat.io/datagrid/datagrid-8-prod-operator-bundle@sha256:ca127d700e0440a4b895ebfa07e7ef88690e756a01535405b3e5b45d9129f636
+    properties: '{"properties":[{"type":"olm.gvk","value":{"group":"infinispan.org","kind":"Backup","version":"v2alpha1"}},{"type":"olm.gvk","value":{"group":"infinispan.org","kind":"Batch","version":"v2alpha1"}},{"type":"olm.gvk","value":{"group":"infinispan.org","kind":"Cache","version":"v2alpha1"}},{"type":"olm.gvk","value":{"group":"infinispan.org","kind":"Infinispan","version":"v1"}},{"type":"olm.gvk","value":{"group":"infinispan.org","kind":"Restore","version":"v2alpha1"}},{"type":"olm.package","value":{"packageName":"datagrid","version":"8.4.9"}}]}'
+    replaces: datagrid-operator.v8.4.8
+  - catalogSourceRef:
+      name: community-operators
+      namespace: openshift-marketplace
+    identifier: hyperfoil-operator.v0.24.2
+    path: quay.io/openshift-community-operators/hyperfoil-bundle@sha256:8b8ab75096ff7c72a4a915104573ca46c70e0b5620e5f852aa06772cf297a35e
+    properties: '{"properties":[{"type":"olm.gvk","value":{"group":"hyperfoil.io","kind":"Hyperfoil","version":"v1alpha2"}},{"type":"olm.package","value":{"packageName":"hyperfoil-bundle","version":"0.24.2"}}]}'
+    replaces: hyperfoil-operator.v0.21.0
+  catalogSources:
+  - redhat-operators
+  - community-operators
+  conditions:
+  - lastTransitionTime: "2024-08-23T09:55:38Z"
+    lastUpdateTime: "2024-08-23T09:55:38Z"
+    status: "True"
+    type: Installed
+  phase: Complete
+  plan:
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: operators.coreos.com
+      kind: ClusterServiceVersion
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: datagrid-operator.v8.4.10
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1alpha1
+    status: Created
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: infinispans.infinispan.org
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: restores.infinispan.org
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: backups.infinispan.org
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: batches.infinispan.org
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: caches.infinispan.org
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: ""
+      kind: ServiceAccount
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: infinispan-operator-controller-manager
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: Role
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: datagrid-operator.v8.4.10-infinispan-operator-contro-7764d49887
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: RoleBinding
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: datagrid-operator.v8.4.10-infinispan-operator-contro-7764d49887
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: datagrid-operator.v8.4.10-7785f4d6c8
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: datagrid-operator.v8.4.10
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      manifest: '{"kind":"ConfigMap","name":"becbdfd91e0c9ca0f09fe99aadac389c06f3baf5dc290e1e457489979b95a89","namespace":"openshift-marketplace","catalogSourceName":"redhat-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"datagrid-operator.v8.4.8","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Backup\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Batch\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Cache\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Infinispan\",\"version\":\"v1\"}},{\"type\":\"olm.gvk\",\"value\":{\"group\":\"infinispan.org\",\"kind\":\"Restore\",\"version\":\"v2alpha1\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"datagrid\",\"version\":\"8.4.9\"}}]}"}'
+      name: datagrid-operator.v8.4.10-7785f4d6c8
+      sourceName: redhat-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: operators.coreos.com
+      kind: ClusterServiceVersion
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator.v0.24.2
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1alpha1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoils.hyperfoil.io
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Present
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: ""
+      kind: ServiceAccount
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator-controller-manager
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: Role
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator.v0.24.2-hyperfoil-operator-contro-6469c66c64
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: RoleBinding
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator.v0.24.2-hyperfoil-operator-contro-6469c66c64
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator.v0.24.2-65f9f567d6
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  - resolving: hyperfoil-operator.v0.24.2
+    resource:
+      group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      manifest: '{"kind":"ConfigMap","name":"34c6c65a7980acb5f308bdff2eb19cd4da2f20c7eb646af4bc12ccee06c074e","namespace":"openshift-marketplace","catalogSourceName":"community-operators","catalogSourceNamespace":"openshift-marketplace","replaces":"hyperfoil-operator.v0.21.0","properties":"{\"properties\":[{\"type\":\"olm.gvk\",\"value\":{\"group\":\"hyperfoil.io\",\"kind\":\"Hyperfoil\",\"version\":\"v1alpha2\"}},{\"type\":\"olm.package\",\"value\":{\"packageName\":\"hyperfoil-bundle\",\"version\":\"0.24.2\"}}]}"}'
+      name: hyperfoil-operator.v0.24.2-65f9f567d6
+      sourceName: community-operators
+      sourceNamespace: openshift-marketplace
+      version: v1
+    status: Created
+  startTime: "2024-08-23T09:55:38Z"

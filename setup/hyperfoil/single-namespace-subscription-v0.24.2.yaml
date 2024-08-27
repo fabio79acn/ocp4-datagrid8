@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: hyperfoil-bundle
+  namespace: myPROJ
+spec:
+  channel: alpha
+  installPlanApproval: Manual
+  name: hyperfoil-bundle
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: hyperfoil-operator.v0.24.2
