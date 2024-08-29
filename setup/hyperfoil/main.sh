@@ -5,8 +5,17 @@ set -euo pipefail
 [ -z ${myPROJ} ] && exit 1
 
 sed -s "s/myPROJ/${myPROJ}/g" 10 | oc create -f-  
-readonly myINSTALLPLAN=$(oc -n ${myPROJ} get installplan -o json | jq -r '.items[] | select(.spec.clusterServiceVersionNames[] | contains("hyperfoil-operator.v0.24.2")) | .metadata.name' | head -1)
-[ -z ${myINSTALLPLAN} ] && exit 1
+
+myINSTALLPLAN=""
+for i in $(seq 0 100); do
+  myINSTALLPLAN="$(oc -n ${myPROJ} get installplan -o json | jq -r '.items[] | select(.spec.clusterServiceVersionNames[] | contains("hyperfoil-operator.v0.24.2")) | .metadata.name' | head -1)"
+  [[ "${myINSTALLPLAN}" =~ "install" ]] && break
+  echo  "No install plan is available, sleeping 2s and trying again.."
+  sleep 2
+done
+echo  "Install plan:${myINSTALLPLAN} is now available, processing it"
+
+
 set -x
 oc -n ${myPROJ} patch installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
 oc -n ${myPROJ} wait --for=condition=Installed  installplan/${myINSTALLPLAN} --timeout=600s
