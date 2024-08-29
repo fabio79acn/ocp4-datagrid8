@@ -1,0 +1,63 @@
+name: hotrod-benchmark-tls-part
+hotrod:
+ # Replace <USERNAME>:<PASSWORD> with your Data Grid credentials.
+ # Replace <SERVICE_HOSTNAME>:<PORT> with the host name and port for Data Grid.
+ - uri: hotrods://developer:oMoAELGLm9zWTZjd@infinispan01:11222?use_ssl=true&ssl_hostname_validation=false&trust_store_file_name=/etc/log4j2/cacerts&trust_store_password=changeit
+   caches:
+    # Replace <CACHE-NAME> with the name of your Data Grid cache.
+    - <CACHE-NAME>
+agents:
+  agent-1:
+    log: mylog-and-cacerts
+  agent-2:
+    log: mylog-and-cacerts
+  agent-3:
+    log: mylog-and-cacerts
+  agent-4:
+    log: mylog-and-cacerts
+  agent-5:
+    log: mylog-and-cacerts
+phases:
+- rampupPut:
+    increasingRate:
+      duration: 10s
+      initialUsersPerSec: 100
+      targetUsersPerSec: 200
+      maxSessions: 300
+      scenario: &put
+      - putData:
+        - randomInt: cacheKey <- 1 .. 40000
+        - randomUUID: cacheValue
+        - hotrodRequest:
+            # Replace <CACHE-NAME> with the name of your Data Grid cache.
+            put: <CACHE-NAME>
+            key: key-
+            value: value-
+- rampupGet:
+    increasingRate:
+      duration: 10s
+      initialUsersPerSec: 100
+      targetUsersPerSec: 200
+      maxSessions: 300
+      scenario: &get
+      - getData:
+        - randomInt: cacheKey <- 1 .. 40000
+        - hotrodRequest:
+            # Replace <CACHE-NAME> with the name of your Data Grid cache.
+            get: <CACHE-NAME>
+            key: key-
+- doPut:
+    constantRate:
+      startAfter: rampupPut
+      duration: 5m
+      usersPerSec: 10000
+      maxSessions: 11000
+      scenario: *put
+- doGet:
+    constantRate:
+      startAfter: rampupGet
+      duration: 5m
+      usersPerSec: 40000
+      maxSessions: 41000
+      scenario: *get
+
