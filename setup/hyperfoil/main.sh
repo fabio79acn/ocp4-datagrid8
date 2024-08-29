@@ -4,10 +4,29 @@ set -euo pipefail
 
 [ -z ${myPROJ} ] && exit 1
 
+sed -s "s/myPROJ/${myPROJ}/g" 10 | oc create -f-  
+readonly myINSTALLPLAN=$(oc -n ${myPROJ} get installplan -o json | jq -r '.items[] | select(.spec.clusterServiceVersionNames[] | contains("hyperfoil-operator.v0.24.2")) | .metadata.name' | head -1)
+[ -z ${myINSTALLPLAN} ] && exit 1
+set -x
+oc -n ${myPROJ} patch installplan/${myINSTALLPLAN} --type merge -p '{"spec":{"approved":true}}'
+oc -n ${myPROJ} wait --for=condition=Installed  installplan/${myINSTALLPLAN} --timeout=600s
+set +x
+
 readonly myHYPERFOIL_TMP_DIR="/tmp/hyperfoil"
 [   -d $myHYPERFOIL_TMP_DIR ] && rm -rf $myHYPERFOIL_TMP_DIR
 [ ! -d $myHYPERFOIL_TMP_DIR ] && mkdir  $myHYPERFOIL_TMP_DIR
 cd     $myHYPERFOIL_TMP_DIR
+
+
+cat > ${myHYPERFOIL_TMP_DIR}/hyperfoil-controller.yaml<<EOF
+apiVersion: hyperfoil.io/v1alpha2
+kind: Hyperfoil
+metadata:
+  name: hyperfoil
+spec:
+  version: latest
+EOF
+oc -n ${myPROJ} apply -f ${myHYPERFOIL_TMP_DIR}/hyperfoil-controller.yaml
 
 set +e
 while true; do
@@ -59,7 +78,7 @@ keytool -list -keystore $myHYPERFOIL_TMP_DIR02/cacerts  -storepass changeit  -al
 readonly myCM=mylog-and-cacerts
 
 set +e
-oc -n ${myPROJ} get cm/$myCM 2>&1 >/dev/null && oc -n ${myPROJ} delete cm/$myCM 
+oc -n ${myPROJ} get cm/$myCM >/dev/null 2>&1  && oc -n ${myPROJ} delete cm/$myCM 
 set -e
 oc -n ${myPROJ} create cm mylog-and-cacerts --from-file=${myHYPERFOIL_TMP_DIR02}
 
