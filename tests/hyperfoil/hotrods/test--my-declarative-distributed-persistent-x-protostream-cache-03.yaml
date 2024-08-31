@@ -29,9 +29,9 @@ phases:
 - rampupPut:
     increasingRate:
       duration: 10s
-      initialUsersPerSec: 100
-      targetUsersPerSec: 200
-      maxSessions: 200
+      initialUsersPerSec: 10
+      targetUsersPerSec: 20
+      maxSessions: 20
       scenario: &put
       - putData:
         - randomInt: cacheKey <- 1 .. 40000
@@ -44,9 +44,9 @@ phases:
 - rampupGet:
     increasingRate:
       duration: 10s
-      initialUsersPerSec: 100
-      targetUsersPerSec: 200
-      maxSessions: 200
+      initialUsersPerSec: 10
+      targetUsersPerSec: 20
+      maxSessions: 20
       scenario: &get
       - getData:
         - randomInt: cacheKey <- 1 .. 40000
@@ -58,14 +58,14 @@ phases:
     constantRate:
       startAfter: rampupPut
       duration: 5m
-      usersPerSec: 100
-      maxSessions: 110
+      usersPerSec: 10
+      maxSessions: 11
       scenario: *put
 - doGet:
     constantRate:
       startAfter: rampupGet
       duration: 5m
-      usersPerSec: 400
-      maxSessions: 410
+      usersPerSec: 40
+      maxSessions: 41
       scenario: *get
 
