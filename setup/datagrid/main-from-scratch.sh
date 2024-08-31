@@ -24,6 +24,7 @@ sed -s "s/myPROJ/${myPROJ}/g" 50 | oc create -f-  &&                         \
 sed -s "s/myPROJ/${myPROJ}/g" 60 | oc create -f-  &&                         \
 readonly DONE="true"
 
+[[ ${DONE} != "true" ]] && echo "DataGrid setup FAILED :-(" && exit 1
 
 
 if [[ ${DONE} == "true" ]]; then
@@ -60,6 +61,18 @@ EOF
   echo
 fi
 
-[[ ${DONE} != "true" ]] && echo "DataGrid setup FAILED :-(" && exit 1
+readonly myBACKUP_NAME="infinispan-backup-manager"
+echo "Trying to install a backup policy for datagrid based on ocp4 cronjobs:"
+oc -n $myPROJ import-image openshift4/ose-cli:v4.14.0 --from=registry.redhat.io/openshift4/ose-cli:v4.14.0  --confirm
+sed -e "s/myPROJ/${myPROJ}/" 70 | oc create -f-  && \
+sed -e "s/myPROJ/${myPROJ}/" 72 | oc create -f-  && \
+sed -e "s/myPROJ/${myPROJ}/" 74 | oc create -f-  && \
+sed -e "s/myPROJ/${myPROJ}/" 76 | oc create -f-  
+oc auth can-i create backups.infinispan.org --as=system:serviceaccount:${myPROJ}:${myBACKUP_NAME} -n ${myPROJ}
+[ $? -eq 0 ] && echo "DataGrid backup setup completed in the ocp4 project: ${myPROJ}" && exit 0
+                echo "DataGrid backup setup failed in the ocp4 project: ${myPROJ}"    && exit 1
+
+oc -n ${myPROJ} create job datagrid-backup-onetime-testjob --from=cronjob/${myBACKUP_NAME}
+
 
 

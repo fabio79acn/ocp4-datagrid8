@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: infinispan-backup-manager
+  namespace: myPROJ
+spec:
+  schedule: "23 13 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            datagrid: "true"
+            serviceaccount: infinispan-backup-manager
+        spec:
+          concurrencyPolicy: Forbid
+          serviceAccountName: infinispan-backup-manager
+          containers:
+          - name: backup-container
+            image: image-registry.openshift-image-registry.svc:5000/myPROJ/ose-cli:v4.14.0
+            command:
+            - /bin/bash
+            - -c
+            - |
+              #!/bin/bash
+              set -euox pipefail
+              readonly myBACKUP_DAYS=15
+              readonly myTIMESTAMP="$(date +%Y-%m-%d--%H-%M-%S)"
+              # Create a new backup
+              echo "
+              apiVersion: infinispan.org/v2alpha1
+              kind: Backup
+              metadata:
+                name: backup--infinispan01--${myTIMESTAMP}
+                namespace: myPROJ
+              spec:
+                cluster: infinispan01
+                volume:
+                  storage: 1Gi
+                  storageClassName: rhosp-cinder" | oc create -f-
+              
+              # Get a list of backups older than 15 days and delete them
+              oc -n myPROJ get backups.infinispan.org -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}' |
+              while read backup_name creation_date; do
+                  # Calculate the backup age in days
+                  backup_age=$(( ($(date +%s) - $(date -d "$creation_date" +%s)) / 86400 ))
+                  if [ $backup_age -gt ${myBACKUP_DAYS} ]; then
+                      oc -n myPROJ delete backups.infinispan.org $backup_name
+                  fi
+              done
+          restartPolicy: OnFailure
+
+
