@@ -2,9 +2,9 @@ apiVersion: infinispan.org/v2alpha1
 kind: Backup
 metadata:
   name: backup--infinispan01--2024-08-29
-  namespace: coll-gestlck-be--datagrid-by-martinelli
+  namespace: myPROJ
 spec:
   cluster: infinispan01
   volume:
-    storage: 3Gi
+    storage: 1Gi
     storageClassName: rhosp-cinder
