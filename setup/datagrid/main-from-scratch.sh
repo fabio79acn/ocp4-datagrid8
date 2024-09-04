@@ -30,18 +30,18 @@ readonly DONE="true"
 if [[ ${DONE} == "true" ]]; then
    
   readonly myPORTAL_USER="$(    oc get     -n ${myPROJ} secret ${myDATAGRID}-generated-operator-secret -o json | jq '.data.username' -r  | base64 -d)"
-  readonly myPORTAL_PASSWORD="$(oc get     -n ${myPROJ} secret ${myDATAGRID}-generated-operator-secret -o json | jq '.data.password' -r  |base64 -d)"
+  readonly myPORTAL_PASSWORD="$(oc get     -n ${myPROJ} secret ${myDATAGRID}-generated-operator-secret -o json | jq '.data.password' -r  | base64 -d)"
   readonly myCLI_USER="$(       oc extract -n ${myPROJ} secret/${myDATAGRID}-generated-secret  --to=-  |& egrep username |  cut  -d: -f2 | tr  -d ' ')"
   readonly myCLI_PASSWORD="$(   oc extract -n ${myPROJ} secret/${myDATAGRID}-generated-secret  --to=-  |& egrep password |  cut  -d: -f2 | tr  -d ' ')"
 
   echo    "DataGrid Web portal credentials| username:$myPORTAL_USER password:$myPORTAL_PASSWORD"
   echo    "Datagrid     CLI    credentials| username:$myCLI_USER    password:$myCLI_PASSWORD"
 
-  readonly PODs="$(oc get po  -l app=infinispan-pod -o jsonpath='{.items[*].metadata.name}')"
+  readonly PODs="$(oc -n ${myPROJ} get po  -l app=infinispan-pod -o jsonpath='{.items[*].metadata.name}')"
 
   [ -z "$PODs" ] && exit 1
 
-  for PO in $PODs ; do oc exec $PO -- mkdir -p /home/jboss/.config/red_hat_data_grid/ ; done
+  for PO in $PODs ; do oc -n ${myPROJ} exec $PO -- mkdir -p /home/jboss/.config/red_hat_data_grid/ ; done
   cat << EOF > /tmp/cli.properties
 autoconnect-url=https\://${myCLI_USER}\:${myCLI_PASSWORD}@localhost\:11222
 
@@ -54,7 +54,7 @@ timeout=5000
 # Suppress command output (optional)
 quiet=false
 EOF
-  for PO in $PODs ; do oc cp /tmp/cli.properties $PO:/home/jboss/.config/red_hat_data_grid/ ; done
+  for PO in $PODs ; do oc -n ${myPROJ} cp /tmp/cli.properties $PO:/home/jboss/.config/red_hat_data_grid/ ; done
   echo "The file /home/jboss/.config/red_hat_data_grid/cli.properties has been installed on each DataGrid pod"
   rm -f /tmp/cli.properties
 
