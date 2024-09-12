@@ -1,0 +1,12 @@
+apiVersion: infinispan.org/v2alpha1
+kind: Batch
+metadata:
+  name: my-declarative-distributed-persistent-x-protostream-cache-03
+  namespace: myPROJ
+spec:
+  cluster: infinispan01
+  config: |
+    put --cache=my-declarative-distributed-persistent-x-protostream-cache-03 hello10 world10 
+    put --cache=my-declarative-distributed-persistent-x-protostream-cache-03 hello41 world41 
+    get --cache=my-declarative-distributed-persistent-x-protostream-cache-03 hello10
+    get --cache=my-declarative-distributed-persistent-x-protostream-cache-03 hello41
