@@ -18,8 +18,8 @@ sed -s "s/myPROJ/${myPROJ}/g" 10 | oc create -f-  &&                         \
 sed -s "s/myPROJ/${myPROJ}/g" 20 | oc create -f-  &&                         \
 ./25                                              &&                         \
 sed -s "s/myPROJ/${myPROJ}/g" 30 | oc create -f-  &&                         \
-oc wait --for condition=wellFormed --timeout=5000s infinispan/$myDATAGRID && \
-oc wait -n ${myPROJ} --for condition=Ready po -l app=infinispan-pod       && \
+oc wait -n ${myPROJ} --for condition=wellFormed --timeout=5000s infinispan/$myDATAGRID && \
+oc wait -n ${myPROJ} --for condition=Ready po -l app=infinispan-pod --timeout=5000s       && \
 sed -s "s/myPROJ/${myPROJ}/g" 40 | oc create -f-  &&                         \
 sed -s "s/myPROJ/${myPROJ}/g" 50 | oc create -f-  &&                         \
 sed -s "s/myPROJ/${myPROJ}/g" 60 | oc create -f-  &&                         \

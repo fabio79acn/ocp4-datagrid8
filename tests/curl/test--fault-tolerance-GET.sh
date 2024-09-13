@@ -17,7 +17,7 @@ readonly INFINISPAN_PASSWORD="$(oc -n ${myPROJ} extract secret/${INFINISPAN_CLUS
 readonly myCACHE_DEF_DIR='../../cache-definitions'
 readonly myCACHE_DEF_FILE='replicated-cache-01'
 [ ! -f $myCACHE_DEF_DIR/${myCACHE_DEF_FILE}.json ] && exit 1
-readonly INFINISPAN_CACHE="cache-test"
+readonly INFINISPAN_CACHE="wn-fault-tolerance-cache"
 
 set -e
 

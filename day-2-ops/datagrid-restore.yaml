@@ -1,0 +1,9 @@
+apiVersion: infinispan.org/v2alpha1
+kind: Restore
+metadata:
+  name: myRESTORE
+  namespace: myPROJ
+spec:
+  backup: myBACKUP
+  cluster: myINFINISPAN
+
