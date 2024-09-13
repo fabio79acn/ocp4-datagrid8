@@ -39,7 +39,8 @@ while true; do
 done
 set -e 
 set -x
-oc -n ${myPROJ} wait --for=condition=Available   deployment/infinispan-operator-controller-manager --timeout=600s
-oc -n ${myPROJ} wait --for=condition=Initialized po -l app.kubernetes.io/name=infinispan-operator  --timeout=600s
+oc -n ${myPROJ} wait --for=condition=Available   deployment/infinispan-operator-controller-manager --timeout=900s
+oc -n ${myPROJ} wait --for=condition=Initialized po -l app.kubernetes.io/name=infinispan-operator  --timeout=900s
+oc -n ${myPROJ} wait --for=condition=Ready po -l app.kubernetes.io/name=infinispan-operator  --timeout=900s
 set +x
 echo
